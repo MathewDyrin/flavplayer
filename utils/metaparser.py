@@ -104,13 +104,3 @@ class ImgMetaParser(BaseMetaParser):
     def img_urls(self):
         return [self.clean_url(item["img"]) for item in self._temp_meta_storage]
 
-
-if __name__ == '__main__':
-    query = input("Enter artist name or track title:")
-    parser = AudioMetaParser(query_params=query)
-    parser.parse_meta_data()
-    parser.load_data(0, "url", "mp3", "audio")
-
-    # img_parser = ImgMetaParser(query_params=query)
-    # img_parser.parse_meta_data()
-    # img_parser.load_data(0, "img", "jpg", "covers")

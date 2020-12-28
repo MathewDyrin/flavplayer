@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('audio/', include('flavaudio.urls')),
     path('playlist/', include('flavplaylist.urls')),
+    path('search/', include('flavsearch.urls')),
 ]
