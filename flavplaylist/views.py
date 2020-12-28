@@ -1,9 +1,9 @@
-from rest_framework.viewsets import generics
+from rest_framework import viewsets
 from flavplaylist.serializers import PlaylistSerializer
 from flavplaylist.models import Playlist
 
 
-class PlayListView(generics.ListCreateAPIView):
+class PlayListViewSet(viewsets.ModelViewSet):
     queryset = Playlist.objects.all()
     serializer_class = PlaylistSerializer
 

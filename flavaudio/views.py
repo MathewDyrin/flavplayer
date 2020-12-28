@@ -1,8 +1,10 @@
-from rest_framework.viewsets import generics
+from rest_framework import viewsets
 from flavaudio.models import Audio
 from flavaudio.serializers import AudioSerializer
 
 
-class AudioView(generics.ListCreateAPIView):
+class AudioViewSet(viewsets.ModelViewSet):
     queryset = Audio.objects.all()
     serializer_class = AudioSerializer
+
+

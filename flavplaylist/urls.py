@@ -1,6 +1,10 @@
-from django.urls import path
+from rest_framework.routers import DefaultRouter
 from flavplaylist import views
 
+router = DefaultRouter()
+router.register('', views.PlayListViewSet, basename="playlist")
+
+
 urlpatterns = [
-    path('', views.PlayListView.as_view())
-]
+
+] + router.urls
