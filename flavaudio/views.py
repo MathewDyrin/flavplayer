@@ -44,8 +44,8 @@ def loader_proc(parser, path, cache, index, serialzer):
         audio = serialzer(data=data)
         if audio.is_valid():
             audio.create(audio.validated_data)
-            return Response(audio.data, status.HTTP_201_CREATED)
-        return Response(audio.errors, status.HTTP_400_BAD_REQUEST)
+            return True
+        return False
 
     except OSError:
         pass
@@ -107,8 +107,8 @@ class AudioViewSet(viewsets.ModelViewSet):
             thread = threading.Thread(target=loader_proc, args=(parser, path, cache, index, self.serializer_class))
             thread.start()
             thread.join()
-            return Response()
-        return Response(query_data)
+            return Response(status=status.HTTP_201_CREATED)
+        return Response({"msg": "ok"})
 
 
 
