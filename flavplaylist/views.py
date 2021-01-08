@@ -1,3 +1,4 @@
+import os
 import base64
 import datetime
 import hashlib
@@ -64,3 +65,12 @@ class PlayListViewSet(viewsets.ModelViewSet):
             return Response(playlist.data, status=status.HTTP_201_CREATED)
         return Response(playlist.errors, status=status.HTTP_400_BAD_REQUEST)
 
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        img_path = instance.img_url
+        self.perform_destroy(instance)
+        try:
+            os.remove(img_path)
+        except FileNotFoundError:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)

@@ -1,3 +1,4 @@
+import os
 import threading
 import datetime
 import hashlib
@@ -109,6 +110,18 @@ class AudioViewSet(viewsets.ModelViewSet):
             thread.join()
             return Response(status=status.HTTP_201_CREATED)
         return Response({"msg": "ok"})
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        audio_path = instance.src_url
+        self.perform_destroy(instance)
+        try:
+            os.remove(audio_path)
+        except FileNotFoundError:
+            pass
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 
 
 
