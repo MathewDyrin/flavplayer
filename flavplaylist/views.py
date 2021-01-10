@@ -74,3 +74,16 @@ class PlayListViewSet(viewsets.ModelViewSet):
         except FileNotFoundError:
             pass
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        print(instance.id)
+        img_path = instance.img_url
+        data = request.data
+        data["img_url"] = img_path
+        data.pop("audio_list")
+        playlist = self.serializer_class(instance=instance, data=data)
+        if playlist.is_valid():
+            print(True)
+            playlist.update(instance, playlist.validated_data)
+        return Response(status.HTTP_201_CREATED)
