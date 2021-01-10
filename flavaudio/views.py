@@ -109,7 +109,7 @@ class AudioViewSet(viewsets.ModelViewSet):
             thread.start()
             thread.join()
             return Response(status=status.HTTP_201_CREATED)
-        return Response({"msg": "ok"})
+        return Response(status=status.HTTP_200_OK)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -120,8 +120,3 @@ class AudioViewSet(viewsets.ModelViewSet):
         except FileNotFoundError:
             pass
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-
-
-

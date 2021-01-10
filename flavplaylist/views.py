@@ -53,7 +53,7 @@ class PlayListViewSet(viewsets.ModelViewSet):
         if playlist.is_valid():
             playlist.create(playlist.validated_data)
             return Response(playlist.data, status=status.HTTP_201_CREATED)
-        return Response(status.HTTP_400_BAD_REQUEST)
+        return Response(playlist.errors, status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -73,4 +73,5 @@ class PlayListViewSet(viewsets.ModelViewSet):
         playlist = self.serializer_class(instance=instance, data=data)
         if playlist.is_valid():
             playlist.update(instance, playlist.validated_data)
-        return Response(status=status.HTTP_201_CREATED)
+            return Response(playlist.data, status=status.HTTP_201_CREATED)
+        return Response(playlist.errors, status=status.HTTP_400_BAD_REQUEST)
