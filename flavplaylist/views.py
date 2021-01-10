@@ -9,7 +9,6 @@ from rest_framework import status
 from PIL import Image
 from flavplaylist.serializers import PlaylistSerializer
 from flavplaylist.models import Playlist
-from flavaudio.models import Audio
 
 
 class PlayListViewSet(viewsets.ModelViewSet):
@@ -46,24 +45,15 @@ class PlayListViewSet(viewsets.ModelViewSet):
             cropped = file.crop((0, 0, width, width))
             cropped.save(path)
 
-        audio_list = request.data["audio_list"]
-        request.data.pop("audio_list")
-
+        request.data.pop("img_base64data")
         data = request.data
         data["img_url"] = path
 
         playlist = self.serializer_class(data=data)
         if playlist.is_valid():
-            playlist_obj = playlist.create(playlist.validated_data)
-            for track in audio_list:
-
-                try:
-                    audio = Audio.objects.get(pk=track)
-                    playlist_obj.tracks.add(audio)
-                except Audio.DoesNotExist:
-                    pass
+            playlist.create(playlist.validated_data)
             return Response(playlist.data, status=status.HTTP_201_CREATED)
-        return Response(playlist.errors, status=status.HTTP_400_BAD_REQUEST)
+        return Response(status.HTTP_400_BAD_REQUEST)
 
     def destroy(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -77,13 +67,10 @@ class PlayListViewSet(viewsets.ModelViewSet):
 
     def update(self, request, *args, **kwargs):
         instance = self.get_object()
-        print(instance.id)
         img_path = instance.img_url
         data = request.data
         data["img_url"] = img_path
-        data.pop("audio_list")
         playlist = self.serializer_class(instance=instance, data=data)
         if playlist.is_valid():
-            print(True)
             playlist.update(instance, playlist.validated_data)
-        return Response(status.HTTP_201_CREATED)
+        return Response(status=status.HTTP_201_CREATED)

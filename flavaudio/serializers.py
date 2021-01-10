@@ -3,7 +3,7 @@ from flavaudio.models import Audio
 
 
 class AudioSerializer(serializers.ModelSerializer):
-    id = serializers.PrimaryKeyRelatedField(read_only=True)
+    id = serializers.IntegerField(required=False)
 
     class Meta:
         model = Audio

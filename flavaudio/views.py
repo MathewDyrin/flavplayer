@@ -16,7 +16,7 @@ from flavaudio.serializers import AudioSerializer
 CACHE = {}
 
 
-def loader_proc(parser, path, cache, index, serialzer):
+def loader_proc(parser, path, cache, index, serializer):
     try:
         parser.load_data(index, "url", path)
 
@@ -42,7 +42,7 @@ def loader_proc(parser, path, cache, index, serialzer):
             "repr_duration": repr_duration
         }
 
-        audio = serialzer(data=data)
+        audio = serializer(data=data)
         if audio.is_valid():
             audio.create(audio.validated_data)
             return True
@@ -53,7 +53,7 @@ def loader_proc(parser, path, cache, index, serialzer):
 
 
 class AudioPagination(PageNumberPagination):
-    page_size = 100
+    page_size = 1000
 
 
 class AudioViewSet(viewsets.ModelViewSet):
