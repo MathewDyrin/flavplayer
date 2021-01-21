@@ -12,3 +12,6 @@ class Playlist(models.Model):
 
     def __str__(self):
         return f"{self.pk} : {self.title}"
+
+    class Meta:
+        ordering = ['-pk']
